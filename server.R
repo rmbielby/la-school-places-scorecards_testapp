@@ -26,7 +26,6 @@ function(input, output, session) {
     }
   ) 
   
-  
   # actionLinks
   observeEvent(input$linkQuantityTab, {
     updateTabsetPanel(session, "navbar", selected = "la_scorecards")
@@ -578,7 +577,7 @@ function(input, output, session) {
     # Put value into box to plug into app
     shinydashboard::valueBox(
       paste0(PrefT3, "%"),
-      paste0("Percentage of applicants who recieved an offer of one of their top three preferred ", str_to_lower(input$phase_choice), " schools in ", (input$LA_choice)),
+      paste0("Percentage of applicants who received an offer of one of their top three preferred ", str_to_lower(input$phase_choice), " schools in ", (input$LA_choice)),
       # icon = icon("fas fa-sort-amount-up"),
       color = "light-blue"
     )
