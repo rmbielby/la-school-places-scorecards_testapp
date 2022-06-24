@@ -5,6 +5,7 @@ library(shinyGovstyle)
 library(shiny)
 library(dplyr)
 library(data.table)
+
 library(shinycssloaders)
 library(tidyr)
 library(stringr)
@@ -24,7 +25,7 @@ library(styler)
 library(rsconnect)
 library(bit64)
 library(webshot)
-webshot::install_phantomjs()
+webshot::install_phantomjs(force = FALSE)
 
 # tidy_code_function -------------------------------------------------------------------------------
 
@@ -33,10 +34,18 @@ tidy_code_function <- function() {
   message("App scripts")
   message("----------------------------------------")
   app_scripts <- eval(styler::style_dir(recursive = FALSE)$changed)
-  return(app_scripts)
+  message("R scripts")
+  message("----------------------------------------")
+  r_scripts <- eval(styler::style_dir("R/")$changed)
+  message("Test scripts")
+  message("----------------------------------------")
+  test_scripts <- eval(styler::style_dir("tests/", filetype = "r")$changed)
+  script_changes <- c(app_scripts, r_scripts, test_scripts)
+  return(script_changes)
 }
 
 source("0_variable_change.R")
+source("R/functions.R")
 
 # ----------------------------------------------------------------------------
 # Setup loading screen and spinner
@@ -77,8 +86,8 @@ scorecards_data <- fread("data/scorecards_data.csv")
 
 # pivot data around to long format
 scorecards_data_pivot <- scorecards_data %>%
-  mutate_at(vars(-c("Region","LA_name")), as.numeric) %>%
-  pivot_longer(cols = !starts_with(c("Region","LA"))) %>%
+  mutate_at(vars(-c("Region", "LA_name")), as.numeric) %>%
+  pivot_longer(cols = !starts_with(c("Region", "LA"))) %>%
   # assign phase based on names of columns
   mutate(
     Phase = ifelse(
