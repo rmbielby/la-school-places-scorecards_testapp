@@ -46,6 +46,7 @@ tidy_code_function <- function() {
 
 source("0_variable_change.R")
 source("R/functions.R")
+source("R/plotting.R")
 
 # ----------------------------------------------------------------------------
 # Setup loading screen and spinner
@@ -138,15 +139,15 @@ dfe_colours <- c(
 
 # Notes tables----------------------------------
 
-notesTable <- read.xlsx(
-  xlsxFile = "data/tech_guidance.xlsx",
-  sheet = "Overall"
-) # %>%
-# fill(everything()) #collapse_Rows currently broken in kable. When fixed we can add back in.
 
 notesTableQuant <- read.xlsx(
   xlsxFile = "data/tech_guidance.xlsx",
   sheet = "Quantity"
+)
+
+notesTableforacc <- read.xlsx(
+  xlsxFile = "data/tech_guidance.xlsx",
+  sheet = "ForecastAccuracy"
 )
 
 notesTablePref <- read.xlsx(
